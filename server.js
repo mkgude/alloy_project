@@ -22,7 +22,6 @@ const config = {
 };
 
 app.post('/post', function (req, res) {
-    console.log(req.body.payload);
   axios.post('https://sandbox.alloy.co/v1/evaluations', {
     ...req.body.payload
     }, config,

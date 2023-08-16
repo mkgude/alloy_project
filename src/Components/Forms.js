@@ -1,10 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import './Form.css';
-// import moment from 'moment';
-// import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
 
 class Form extends React.Component {
 
@@ -31,13 +27,8 @@ class Form extends React.Component {
     }
 
     handleChange(event) {
-        console.log(event.target.value);
-        // const value = event.target.name;
         if (event.target.id === 'birth_date') {
-            console.log('birthdate: ', event.target.value);
             const date = new Date(event.target.value);
-            console.log('birthdate:', date.toISOString(), 'birthdate view:', event.target.value);
-            
             this.setState({[event.target.id]: date.toISOString(),
                 birth_date_view: event.target.value
             });
@@ -49,7 +40,6 @@ class Form extends React.Component {
     }
 
     handleSubmit(event) {
-        console.log('form data', this.state);
         axios.post('/post', {
             payload: this.state
         }).then((response) => {
