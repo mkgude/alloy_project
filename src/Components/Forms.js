@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './Form.css';
+// import moment from 'moment';
 // import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,41 +21,66 @@ class Form extends React.Component {
             address_postal_code: '',
             address_country_code: '',
             document_ssn: '',
-            birth_date: ''
+            birth_date: '',
+            birth_date_view: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.clearForm = this.clearForm.bind(this);
     }
 
     handleChange(event) {
         console.log(event.target.value);
-        const value = event.target.value;
-        if (event.target.value === this.state.birth_date) {
-            console.log(this.state.birthday)
+        // const value = event.target.name;
+        if (event.target.id === 'birth_date') {
+            console.log('birthdate: ', event.target.value);
+            const date = new Date(event.target.value);
+            console.log('birthdate:', date.toISOString(), 'birthdate view:', event.target.value);
+            
+            this.setState({[event.target.id]: date.toISOString(),
+                birth_date_view: event.target.value
+            });
+            
         } else {
-            this.setState({[event.target.id]: value});
+            this.setState({[event.target.id]: event.target.value});
         }
         
     }
 
     handleSubmit(event) {
         console.log('form data', this.state);
-        axios.post('/onboarding', {
+        axios.post('/post', {
             payload: this.state
         }).then((response) => {
             console.log('response', response);
             if(response.data.status === 'Manual Review') {
-                alert('Needs Review')
+                alert('Thank you for submitting your application, we will review and get back to you')
             } else if (response.data.status === "Denied") {
-                alert('Denied')
+                alert('"We are sorry, you have not been approved at this time"')
             } else {
-                alert('Congratulations, Approved!')
+                alert("Success! 🎉🎉🎉 You've been approved!")
             }
         })
-        // alert(this.state.first_name + ', your form was submitted');
+        this.clearForm(); 
         event.preventDefault();
         
+    }
+    clearForm() {
+        this.setState( {
+            name_first: '',
+            name_last: '',
+            email_address: '',
+            address_line_1: '',
+            address_line_2: '',
+            address_city: '',
+            address_state: '',
+            address_postal_code: '',
+            address_country_code: '',
+            document_ssn: '',
+            birth_date: '',
+            birth_date_view: ''
+        })  
     }
     render() {
         return (
@@ -161,7 +187,7 @@ class Form extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <label className="form-label">Birthdate</label>
-                            <input type="text" className="form-control" id="birth_date" value={this.state.birth_date} onChange={this.handleChange} placeholder='yyyy-mm-dd' required />
+                            <input type="text" className="form-control" id="birth_date" value={this.state.birth_date_view} onChange={this.handleChange} placeholder='yyyy-mm-dd' required />
                         </div>
                         <div className="col-12">
                             <button type="submit" className="btn btn-primary">Submit Application</button>

@@ -3,9 +3,5 @@
     outline: solid 1px black;
     padding: 10px;
     border-radius: 10px;
-    
-}
-.form-div {
-    display: flex;
-    justify-content: center;
+    margin: auto;
 }
